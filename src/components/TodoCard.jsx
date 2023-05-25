@@ -3,11 +3,11 @@ import { BsFillTrashFill, BsPencilFill } from "react-icons/bs";
 import { useDispatch } from "react-redux";
 import { actions } from "../features/todos/todosSlice";
 import Swal from "sweetalert2";
-// import { useState } from "react";
+import { useState } from "react";
 
 const TodoCard = ({ todo }) => {
   const dispatch = useDispatch();
-  //   let [inputValue, setInputValue] = useState(todo.content);
+  const [updatedContent, setUpdatedContent] = useState(todo.content);
 
   const handleToggle = (id) => {
     dispatch(actions.toggleTodo({ id }));
@@ -31,25 +31,23 @@ const TodoCard = ({ todo }) => {
     });
   };
 
-  //   const handleUpdate = (id) => {
-  //     inputValue = todo ? todo.content : "";
-  //     console.log(inputValue);
-  //     Swal.fire({
-  //       title: "Update your todo",
-  //       input: "text",
-  //       inputValue: inputValue,
-  //       showCancelButton: true,
-  //       confirmButtonText: "Update",
-  //     }).then((result) => {
-  //       if (result.value) {
-  //         const updateValue = result.value;
-  //         console.log(updateValue);
-  //         dispatch(actions.updateTodo({ id, content: updateValue }));
-  //         setInputValue(updateValue);
-  //         console.log(setInputValue);
-  //       }
-  //     });
-  //   };
+  const handleUpdate = (id, content) => {
+    Swal.fire({
+      title: "Update your todo",
+      input: "text",
+      inputValue: content,
+      showCancelButton: true,
+      confirmButtonText: "Update",
+    }).then((result) => {
+      if (result.value) {
+        const updateValue = result.value;
+        console.log(updateValue);
+        dispatch(actions.updateTodo({ id, content: updateValue }));
+        setUpdatedContent(updateValue);
+      }
+    });
+  };
+  
 
   return (
     <div className="flex justify-between p-3 shadow-lg border-2 border-slate-300 rounded mb-4 items-center max-w-xl mx-auto">
@@ -62,13 +60,13 @@ const TodoCard = ({ todo }) => {
           className="h-5 w-5"
         />
         <p className={`text-lg ${todo.completed ? "line-through" : ""}`}>
-          {todo.content}
+          {todo.content || updatedContent}
         </p>
       </div>
       <div className="space-x-3">
         <button
           className="hover:text-blue-600"
-          //   onClick={() => handleUpdate(todo.id)}
+          onClick={() => handleUpdate(todo.id, todo.content)}
         >
           <BsPencilFill />
         </button>
