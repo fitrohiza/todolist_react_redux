@@ -12,23 +12,24 @@ export const todosSlice = createSlice({
     setUserInput: (state, action) => {
       state.userInput = action.payload.userInput;
     },
+
     createTodo: (state) => {
-      if (state.userInput === "") return;
+      if (!state.userInput || state.userInput.trim() === "") return;
+      const newTodo = {
+        id: uniqueId(),
+        content: state.userInput,
+        completed: false,
+      }; 
       Swal.fire({
         icon: "success",
         title: "Your todo has been saved",
         showConfirmButton: false,
         timer: 1700,
       });
-      const newTodo = {
-        id: uniqueId(),
-        content: state.userInput,
-        completed: false,
-      };
-
       state.todos.push(newTodo);
       state.userInput = "";
     },
+
     toggleTodo: (state, action) => {
       const todo = state.todos.find((todo) => todo.id === action.payload.id);
       todo.completed = !todo.completed;
@@ -39,8 +40,18 @@ export const todosSlice = createSlice({
     },
 
     updateTodo: (state, action) => {
-      const todo = state.todos = state.todos.filter((todo) => todo.id === action.payload.id);
-      todo.content = action.payload.content;
+      const { id, content } = action.payload;
+      const todo = state.todos.find((todo) => todo.id === id);
+      console.log(id)
+      if (todo) {
+        Swal.fire({
+          icon: "success",
+          title: "Your todo has been updated",
+          showConfirmButton: false,
+          timer: 1700,
+        });
+        todo.content = content;
+      }
     },
   },
 });

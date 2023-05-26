@@ -47,37 +47,42 @@ const TodoCard = ({ todo }) => {
       }
     });
   };
-  
 
   return (
-    <div className="flex justify-between p-3 shadow-lg border-2 border-slate-300 rounded mb-4 items-center max-w-xl mx-auto">
-      <div className="flex gap-3 items-center">
-        <input
-          type="checkbox"
-          name="completed"
-          checked={todo.completed}
-          onChange={() => handleToggle(todo.id)}
-          className="h-5 w-5"
-        />
-        <p className={`text-lg ${todo.completed ? "line-through" : ""}`}>
-          {todo.content || updatedContent}
-        </p>
-      </div>
-      <div className="space-x-3">
-        <button
-          className="hover:text-blue-600"
-          onClick={() => handleUpdate(todo.id, todo.content)}
-        >
-          <BsPencilFill />
-        </button>
-        <button
-          className="hover:text-red-600"
-          onClick={() => handleRemove(todo.id)}
-        >
-          <BsFillTrashFill />
-        </button>
-      </div>
-    </div>
+    <>
+      {todo.length < 1 ? (
+        <p>Empty todo</p>
+      ) : (
+        <div className="flex justify-between p-3 shadow-lg border-2 border-slate-300 rounded mb-4 items-center max-w-xl mx-auto bg-white">
+          <div className="flex gap-3 items-center">
+            <input
+              type="checkbox"
+              name="completed"
+              checked={todo.completed}
+              onChange={() => handleToggle(todo.id)}
+              className="h-5 w-5"
+            />
+            <p className={`text-lg ${todo.completed ? "line-through" : ""}`}>
+              {todo.content || updatedContent}
+            </p>
+          </div>
+          <div className="space-x-3">
+            <button
+              className="hover:text-blue-600"
+              onClick={() => handleUpdate(todo.id, todo.content)}
+            >
+              <BsPencilFill />
+            </button>
+            <button
+              className="hover:text-red-600"
+              onClick={() => handleRemove(todo.id)}
+            >
+              <BsFillTrashFill />
+            </button>
+          </div>
+        </div>
+      )}
+    </>
   );
 };
 
